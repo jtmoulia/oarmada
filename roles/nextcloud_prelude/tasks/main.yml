@@ -1,0 +1,22 @@
+---
+- name: create www-data group
+  group:
+    name: www-data
+  become: yes
+
+- name: create www-data user
+  user:
+    name: www-data
+    group: www-data
+    comment: www-data
+    shell: /usr/local/bin/bash
+  become: yes
+  with_items:
+    - {comment: 'Thomas Moulia', name: 'jtmoulia'}
+
+- name: enable php-fpm
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes
+  become: yes

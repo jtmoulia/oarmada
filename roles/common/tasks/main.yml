@@ -1,0 +1,12 @@
+---
+- name: install basic packages
+  package: name={{ item }}
+  become: yes
+  with_items:
+    - bash
+    - python
+    - python3
+    - tmux
+    - htop
+    - git
+    - rsync

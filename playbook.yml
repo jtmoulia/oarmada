@@ -1,0 +1,18 @@
+---
+- hosts: shed
+  vars:
+    - ansible_python_interpreter: /usr/local/bin/python
+  roles:
+    - {role: common, tags: common}
+    - {role: users, tags: users}
+    - {role: nextcloud_prelude, tags: [nextcloud, nextcloud_prelude]}
+    - role: aalaesar.install_nextcloud
+      vars:
+        php_ver: 71
+        nextcloud_websrv: nginx
+        nextcloud_admin_pwd: plzFix
+        nextcloud_webroot: /var/www/nextcloud
+        nextcloud_db_backend: pgsql
+        nextcloud_db_pwd: plzFix
+      tags: nextcloud
+      become: yes
