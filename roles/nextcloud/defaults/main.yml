@@ -1,0 +1,10 @@
+---
+nextcloud_admin_username: jtmoulia
+nextcloud_admin_password: insecure
+
+nextcloud_data_directory: /media/volume/data
+
+nextcloud_vol_device: /dev/disk/by-id/scsi-0DO_Volume_shed-1-volume
+nextcloud_vol_mountpoint: /media/volume
+
+nextcloud_trusted_domain: shed.pocketknife.io

@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "shed-1-droplet" {
   image      = "ubuntu-16-04-x64"
   name       = "shed-1"
   region     = "${var.shed_do_region}"
-  size       = "512mb"
+  size       = "2gb"
   ssh_keys   = ["${digitalocean_ssh_key.oarmada_key.id}"]
   tags       = ["${digitalocean_tag.shed.id}"]
   volume_ids = ["${digitalocean_volume.shed-1-volume.id}"]

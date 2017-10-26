@@ -1,0 +1,55 @@
+---
+- name: mount storage volume
+  mount:
+    state: mounted
+    path: "{{ nextcloud_vol_mountpoint }}"
+    src: "{{ nextcloud_vol_device }}"
+    fstype: ext4
+  become: yes
+
+- name: install requirements
+  package:
+    name: snap
+  become: yes
+
+- name: install nextcloud via snap
+  command: snap install nextcloud
+  become: yes
+  run_once: true
+
+- name: connect nextcloudto removable media
+  command: snap connect nextcloud:removable-media
+  become: yes
+  run_once: true
+
+- name: configure nextcloud data directory
+  lineinfile:
+    path: /var/snap/nextcloud/current/nextcloud/config/config.php
+    regexp: "'datadirectory' => '.*',$"
+    line: "'datadirectory' => '{{ nextcloud_data_directory }}',"
+  become: yes
+  notify:
+    - restart nextcloud
+
+# - name: setup admin username and password
+#   command: "/snap/bin/nextcloud.manual-install {{ nextcloud_admin_username }} {{ nextcloud_admin_password }}"
+#   become: yes
+#   run_once: true
+
+- name: add host to trusted domains
+  command: '/snap/bin/nextcloud.occ config:system:set trusted_domains 1 --value="{{ nextcloud_trusted_domain }}"'
+  become: yes
+  run_once: true
+
+- name: open 80,443/tcp
+  ufw:
+    rule: allow
+    proto: tcp
+    port: 80,443
+  become: yes
+
+- name: setup lets-encrypt SSL
+  command: "/snap/bin/nextcloud.enable-https self-signed"
+  become: yes
+  run_once: true
+

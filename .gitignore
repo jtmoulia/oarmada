@@ -1,3 +1,2 @@
-galaxy_roles
-
 terraform.tfvars
+terraform.tfstate*

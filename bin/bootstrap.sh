@@ -9,4 +9,4 @@ ssh_call() {
 }
 
 ssh_call passwd
-# ssh_call apt install python
+ssh_call apt install -y python

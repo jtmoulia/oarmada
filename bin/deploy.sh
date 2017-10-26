@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 OARMADA_DIR="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" && pwd )"
-USERNAME=${DEPLOY_USERNAME:-"$(whoami)"}
+USERNAME=${DEPLOY_USERNAME:-"root"}
 PLAYBOOK=${DEPLOY_PLAYBOOK:-"$OARMADA_DIR/playbook.yml"}
 TAG=${DEPLOY_TAG:-shed}
 EXTRA=${DEPLOY_EXTRA:-""}
-USAGE="Usage: deploy [-i identity] [-u username] [-h hosts] [-p playbook] [-e ...]"
+USAGE="Usage: deploy [-i identity] [-u username] [-h hosts] [-p playbook] [-- ...]"
 
 while [[ "$1" ]]; do
     case "$1" in
@@ -42,8 +42,7 @@ while [[ "$1" ]]; do
 done
 
 export DO_INV_TAG="$TAG"
-ansible-playbook --ask-become-pass \
-                 --inventory "$OARMADA_DIR/bin/do-tagged-inv.sh" \
+ansible-playbook --inventory "$OARMADA_DIR/bin/do-tagged-inv.sh" \
                  -e ansible_ssh_user="$USERNAME" \
                  "$PLAYBOOK" \
                  $EXTRA

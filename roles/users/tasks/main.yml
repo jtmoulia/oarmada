@@ -1,6 +1,6 @@
 ---
 - name: create authorized users
-  user: name={{ item.name }} comment={{ item.comment }} shell=/usr/local/bin/bash
+  user: name={{ item.name }} comment={{ item.comment }}
   become: yes
   with_items:
     - {comment: 'Thomas Moulia', name: 'jtmoulia'}
@@ -11,17 +11,14 @@
   with_items:
     - {user: 'jtmoulia', key: 'files/thomas.pub'}
 
-- name: add admin to wheel group
-  user: name={{ item }} append=yes groups=wheel
+- name: add admin to group
+  user: name={{ item }} append=yes groups=admin
   become: yes
   tags:
     - users
-    - harden
   with_items:
     - jtmoulia
 
-- name: copy in sudoers file
-  copy: src=files/sudo.conf dest=/usr/local/etc/sudoers.d/wheel.conf
-  become: yes
-  tags:
-    - harden
+# - name: copy in sudoers file
+#   copy: src=files/sudo.conf dest=/usr/local/etc/sudoers.d/wheel.conf
+#   become: yes
